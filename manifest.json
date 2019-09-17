@@ -1,0 +1,40 @@
+{
+    "manifest_version": 2,
+    "name": "Donny",
+    "description": "Donny",
+    "version": "1.0",
+    "browser_action": {
+        "default_icon": "icon16.png",
+        "default_title": "Donny",
+        "default_popup": "popup.html"
+    },
+    "icons": {
+        "16": "icon16.png",
+        "32": "icon32.png",
+        "48": "icon48.png",
+        "128": "icon128.png"
+    },
+    "permissions": [
+        "http://*/*",
+        "https://*/*",
+        "tabs",
+        "storage",
+        "https://dlructfdlsyzm.cloudfront.net/data.json"
+    ],
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": true
+    },
+    "content_scripts": [
+        {
+            "js": [
+                "replacer.js"
+            ],
+            "matches": [
+                "*://*/*"
+            ],
+            "run_at": "document_idle",
+            "all_frames": true
+        }
+    ]
+}

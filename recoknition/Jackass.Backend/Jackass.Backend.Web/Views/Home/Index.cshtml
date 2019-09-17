@@ -1,0 +1,75 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<style>
+    body {
+        padding: 0;
+    }
+
+    .floater {
+        position: absolute;
+        z-index: 1;
+    }
+
+    .jackass {
+        position: relative;
+        top: 0;
+        left: 0;
+    }
+</style>
+
+@section Scripts
+    {
+    <script>
+
+        function getQuery() {
+            var query = $("#url").val();
+            return encodeURIComponent(query);
+        }
+
+        $(document).ready(function () {
+
+            function doQuery(url) {
+                $.get(url).done(function(data) {
+                    $(".jackass").attr("src", decodeURIComponent(getQuery()));
+
+                    var top = parseInt(data[0].top, 10);
+                    var left = parseInt(data[0].left, 10);
+                    var width = parseInt(data[0].width, 10);
+                    var height = parseInt(data[0].height, 10);
+
+                    $(".floater").css({
+                        left: left + "px",
+                        top: top + "px",
+                        width: width + "px",
+                        height: height + "px",
+                        display:""
+                    });
+                }).fail(function(data) {
+                    alert("Failed: " + data.responseText);
+                    console.error(data);
+                });
+            }
+
+
+
+            $("#query").on("click",
+                function () {
+                    $(".floater").css("display", "none");
+
+                    var fullQuery = "http://localhost:5000/api/image?imageUri=" + getQuery();
+                    doQuery(fullQuery);
+                });
+        });
+
+    </script>
+    <img alt="" class="jackass" />
+    <img alt="" src="~/images/23540564.png" style="display: none" class="floater" />
+
+    <fieldset>
+        <label for="url">URL: </label>
+        <input id="url" type="url" />
+        <button id="query">Go</button>
+    </fieldset>
+}
